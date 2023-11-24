@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+
+    <div class="item">
+        <h2>Item Title</h2>
+        <p>Summary of the item details. This is the information that the user sees initially.</p>
+        <p class="details">
+            Full details of the item. This part is hidden by default. 
+            It will be displayed when the user clicks "Read more".
+        </p>
+        <p class="read-more-btn" onclick="toggleDetails(this)">Read more</p>
+    </div>
+
+
+
+
+
+     <form id="student-form">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" required>
+
+        <label for="grade">Grade:</label>
+        <input type="text" id="grade" name="grade" required>
+
+        <button type="button" onclick="addStudent()">Add Student</button>
+    </form>
+    <table id="student-table">
+        <thead>
+          <tr>
+              <th>Name</th>
+              <th>Age</th>
+              <th>Grade</th>
+              <th>Action</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div id="edit-form" class="hidden-form">
+        <h3>Edit Student</h3>
+        <label for="edit-name">Name:</label>
+        <input type="text" id="edit-name" name="edit-name" required>
+
+        <label for="edit-age">Age:</label>
+        <input type="number" id="edit-age" name="edit-age" required>
+
+        <label for="edit-grade">Grade:</label>
+        <input type="text" id="edit-grade" name="edit-grade" required>
+
+        <button type="button" onclick="updateStudent()">Update</button>
+        <button type="button" onclick="cancelEdit()">Cancel</button>
+    </div>
+
+    <script>
+        function addStudent() {
+            const name = document.getElementById('name').value;
+            const age = document.getElementById('age').value;
+            const grade = document.getElementById('grade').value;
+
+            const table = document.getElementById('student-table').getElementsByTagName('tbody')[0];
+            const row = table.insertRow();
+
+            const cell1 = row.insertCell(0);
+            const cell2 = row.insertCell(1);
+            const cell3 = row.insertCell(2);
+            const cell4 = row.insertCell(3);
+
+            cell1.textContent = name;
+            cell2.textContent = age;
+            cell3.textContent = grade;
+
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Delete';
+            deleteButton.onclick = function() {
+                table.deleteRow(row.rowIndex);
+            };
+
+            const editButton = document.createElement('button');
+            editButton.textContent = 'Edit';
+            editButton.onclick = function() {
+                document.getElementById('edit-name').value = name;
+                document.getElementById('edit-age').value = age;
+                document.getElementById('edit-grade').value = grade;
+                document.getElementById('edit-form').style.display = 'block';
+                row.style.display = 'none';
+            };
+
+            cell4.appendChild(deleteButton);
+            cell4.appendChild(editButton);
+
+            document.getElementById('name').value = '';
+            document.getElementById('age').value = '';
+            document.getElementById('grade').value = '';
+        }
+
+        function updateStudent() {
+            const newName = document.getElementById('edit-name').value;
+            const newAge = document.getElementById('edit-age').value;
+            const newGrade = document.getElementById('edit-grade').value;
+
+            const table = document.getElementById('student-table').getElementsByTagName('tbody')[0];
+            const rowIndex = table.rows.length - 1; // Index of the last added row
+
+            table.rows[rowIndex].cells[0].textContent = newName;
+            table.rows[rowIndex].cells[1].textContent = newAge;
+            table.rows[rowIndex].cells[2].textContent = newGrade;
+
+            cancelEdit();
+        }
+
+        function cancelEdit() {
+            document.getElementById('edit-form').style.display = 'none';
+            const table = document.getElementById('student-table');
+            const rowIndex = table.rows.length - 1; // Index of the last added row
+            table.rows[rowIndex].style.display = 'table-row';
+        }
+    </script> 
+<script src="./app.js"></script>
+</body>
+</html>
